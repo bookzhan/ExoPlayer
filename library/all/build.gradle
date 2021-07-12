@@ -12,15 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 apply from: "$gradle.ext.exoplayerSettingsDir/common_library_config.gradle"
+apply plugin:"com.kezong.fat-aar"
 
 dependencies {
-    api project(modulePrefix + 'library-core')
-    api project(modulePrefix + 'library-dash')
-    api project(modulePrefix + 'library-hls')
-    api project(modulePrefix + 'library-rtsp')
-    api project(modulePrefix + 'library-smoothstreaming')
-    api project(modulePrefix + 'library-transformer')
-    api project(modulePrefix + 'library-ui')
+    embed ('com.google.guava:guava:' + guavaVersion) {
+        // Exclude dependencies that are only used by Guava at compile time
+        // (but declared as runtime deps) [internal b/168188131].
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+        exclude group: 'org.checkerframework', module: 'checker-compat-qual'
+        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+        exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
+        exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
+    }
+    embed project(modulePrefix + 'library-common')
+    embed project(modulePrefix + 'library-extractor')
+    embed project(modulePrefix + 'library-core')
+    embed project(modulePrefix + 'library-dash')
+    embed project(modulePrefix + 'library-hls')
+    embed project(modulePrefix + 'library-rtsp')
+    embed project(modulePrefix + 'library-smoothstreaming')
+    embed project(modulePrefix + 'library-transformer')
+    embed project(modulePrefix + 'library-ui')
 }
 
 ext {
