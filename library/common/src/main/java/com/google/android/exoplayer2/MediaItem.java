@@ -39,6 +39,8 @@ import java.util.UUID;
 /** Representation of a media item. */
 public final class MediaItem implements Bundleable {
 
+  private long duration=-1;
+
   /**
    * Creates a {@link MediaItem} for the given URI.
    *
@@ -90,6 +92,7 @@ public final class MediaItem implements Bundleable {
     private long liveMaxOffsetMs;
     private float liveMinPlaybackSpeed;
     private float liveMaxPlaybackSpeed;
+    private long duration=-1;
 
     /** Creates a builder. */
     public Builder() {
@@ -564,6 +567,10 @@ public final class MediaItem implements Bundleable {
       this.mediaMetadata = mediaMetadata;
       return this;
     }
+    public Builder setDuration(long duration) {
+      this.duration = duration;
+      return this;
+    }
 
     /**
      * Returns a new {@link MediaItem} instance with the current builder values.
@@ -594,7 +601,7 @@ public final class MediaItem implements Bundleable {
                 subtitles,
                 tag);
       }
-      return new MediaItem(
+      MediaItem mediaItem = new MediaItem(
           mediaId != null ? mediaId : DEFAULT_MEDIA_ID,
           new ClippingProperties(
               clipStartPositionMs,
@@ -610,6 +617,8 @@ public final class MediaItem implements Bundleable {
               liveMinPlaybackSpeed,
               liveMaxPlaybackSpeed),
           mediaMetadata != null ? mediaMetadata : MediaMetadata.EMPTY);
+      mediaItem.duration=duration;
+      return mediaItem;
     }
   }
 
