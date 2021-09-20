@@ -38,7 +38,7 @@ dependencies {
 ext {
     publish_group_id = 'io.github.bookzhan'
     publish_artifact_id = "exoplayer"
-    publish_version = '2.14.1'
+    publish_version = '2.14.1-1'
     publish_description = 'exoplayer'
 
     developer_id = 'guaishou'
