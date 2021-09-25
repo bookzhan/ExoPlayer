@@ -13,17 +13,70 @@
 // limitations under the License.
 apply from: "$gradle.ext.exoplayerSettingsDir/common_library_config.gradle"
 apply plugin:"com.kezong.fat-aar"
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+ext {
+    NEXUS_USER = ''
+    NEXUS_PASSWORD = ''
+    RELEASE_SNAPSHOT = false
+
+    POM_URL_SNAP = 'https://www.bzblog.online/nexus/repository/maven-snapshots/'
+    POM_URL = 'https://www.bzblog.online/nexus/repository/maven-releases/'
+
+    POM_GROUP_ID = 'com.guaishou.bzlib'
+    POM_ATRIFACT_ID = 'exoplayer'
+    POM_VERSION = '2.14.1-3'
+}
+if (System.getenv('NEXUS_USER')) {
+    NEXUS_USER = System.getenv('NEXUS_USER')
+}
+if (System.getenv('NEXUS_PASSWORD')) {
+    NEXUS_PASSWORD = System.getenv('NEXUS_PASSWORD')
+}
+println("NEXUS_USER=" + NEXUS_USER + " NEXUS_PASSWORD=" + NEXUS_PASSWORD)
+
+// 上传到私服
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            if (RELEASE_SNAPSHOT) {
+                //snapshot环境
+                snapshotRepository(url: POM_URL_SNAP) {
+                    authentication(userName: NEXUS_USER, password: NEXUS_PASSWORD)
+                }
+                POM_VERSION += "-SNAPSHOT"
+            } else {
+                //正式环境
+                repository(url: POM_URL) {
+                    authentication(userName: NEXUS_USER, password: NEXUS_PASSWORD)
+                }
+            }
+
+            pom.groupId = POM_GROUP_ID
+            pom.artifactId = POM_ATRIFACT_ID
+            pom.version = POM_VERSION
+
+            pom.project {
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+        }
+    }
+}
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from ('../common/src/main/java','../core/src/main/java','../dash/src/main/java','../extractor/src/main/java','../hls/src/main/java','../rtsp/src/main/java','../smoothstreaming/src/main/java','../transformer/src/main/java','../ui/src/main/java')
+}
+artifacts {
+    archives androidSourcesJar
+}
 
 dependencies {
-    embed ('com.google.guava:guava:' + guavaVersion) {
-        // Exclude dependencies that are only used by Guava at compile time
-        // (but declared as runtime deps) [internal b/168188131].
-        exclude group: 'com.google.code.findbugs', module: 'jsr305'
-        exclude group: 'org.checkerframework', module: 'checker-compat-qual'
-        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
-        exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
-        exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
-    }
     embed project(modulePrefix + 'library-common')
     embed project(modulePrefix + 'library-extractor')
     embed project(modulePrefix + 'library-core')
@@ -35,36 +88,8 @@ dependencies {
     embed project(modulePrefix + 'library-ui')
 }
 
-ext {
-    publish_group_id = 'io.github.bookzhan'
-    publish_artifact_id = "exoplayer"
-    publish_version = '2.14.1-1'
-    publish_description = 'exoplayer'
-
-    developer_id = 'guaishou'
-    developer_name = 'bookzhan'
-    developer_email = 'bookzhan@qq.com'
-
-    github_name = 'bookzhan'
-    github_project_name = 'ExoPlayer'
-    github_project_url = 'https://github.com/bookzhan/ExoPlayer'
-}
-File secretPropsFile = project.rootProject.file('local.properties')
-if (secretPropsFile.exists()) {
-    Properties p = new Properties()
-    p.load(new FileInputStream(secretPropsFile))
-    if(p.containsKey("signing.keyId")&&p.containsKey("signing.password")&&p.containsKey("signing.secretKeyRingFile")
-            &&p.containsKey("ossrhUsername")&&p.containsKey("ossrhPassword")){
-        apply from: 'https://raw.githubusercontent.com/bookzhan/maven-publish-gradle/master/publish.gradle'
-        println("Configuration information detected")
-        task uploadToMavenCentral(group: 'publishing') {
-            dependsOn(assemble)
-            dependsOn(publishReleasePublicationToMavencentralRepository)
-        }
-    }else {
-        println("Please configure the signature and account information in the local.properties file")
-    }
-}
-
-
+//ext {
+//    releaseArtifact = 'exoplayer'
+//    releaseDescription = 'The ExoPlayer library (all modules).'
+//}
 //apply from: '../../publish.gradle'

@@ -1,1 +1,5 @@
+XSym
+0024
+64efd6ad5a12e37249a3b80e6f7e64a8
 ../../proguard-rules.txt
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

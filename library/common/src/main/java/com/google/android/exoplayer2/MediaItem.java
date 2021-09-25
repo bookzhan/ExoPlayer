@@ -36,10 +36,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** Representation of a media item. */
+/**
+ * Representation of a media item.
+ */
 public final class MediaItem implements Bundleable {
-
-  private long duration=-1;
 
   /**
    * Creates a {@link MediaItem} for the given URI.
@@ -61,40 +61,55 @@ public final class MediaItem implements Bundleable {
     return new MediaItem.Builder().setUri(uri).build();
   }
 
-  /** A builder for {@link MediaItem} instances. */
+  /**
+   * A builder for {@link MediaItem} instances.
+   */
   public static final class Builder {
 
-    @Nullable private String mediaId;
-    @Nullable private Uri uri;
-    @Nullable private String mimeType;
+    @Nullable
+    private String mediaId;
+    @Nullable
+    private Uri uri;
+    @Nullable
+    private String mimeType;
     private long clipStartPositionMs;
     private long clipEndPositionMs;
     private boolean clipRelativeToLiveWindow;
     private boolean clipRelativeToDefaultPosition;
     private boolean clipStartsAtKeyFrame;
-    @Nullable private Uri drmLicenseUri;
+    @Nullable
+    private Uri drmLicenseUri;
     private Map<String, String> drmLicenseRequestHeaders;
-    @Nullable private UUID drmUuid;
+    @Nullable
+    private UUID drmUuid;
     private boolean drmMultiSession;
     private boolean drmPlayClearContentWithoutKey;
     private boolean drmForceDefaultLicenseUri;
     private List<Integer> drmSessionForClearTypes;
-    @Nullable private byte[] drmKeySetId;
+    @Nullable
+    private byte[] drmKeySetId;
     private List<StreamKey> streamKeys;
-    @Nullable private String customCacheKey;
+    @Nullable
+    private String customCacheKey;
     private List<Subtitle> subtitles;
-    @Nullable private Uri adTagUri;
-    @Nullable private Object adsId;
-    @Nullable private Object tag;
-    @Nullable private MediaMetadata mediaMetadata;
+    @Nullable
+    private Uri adTagUri;
+    @Nullable
+    private Object adsId;
+    @Nullable
+    private Object tag;
+    @Nullable
+    private MediaMetadata mediaMetadata;
     private long liveTargetOffsetMs;
     private long liveMinOffsetMs;
     private long liveMaxOffsetMs;
     private float liveMinPlaybackSpeed;
     private float liveMaxPlaybackSpeed;
-    private long duration=-1;
+    private long duration = -1;
 
-    /** Creates a builder. */
+    /**
+     * Creates a builder.
+     */
     public Builder() {
       clipEndPositionMs = C.TIME_END_OF_SOURCE;
       drmSessionForClearTypes = Collections.emptyList();
@@ -289,8 +304,8 @@ public final class MediaItem implements Bundleable {
     /**
      * Sets the {@link UUID} of the protection scheme.
      *
-     * <p>If {@code uuid} is null or unset then no {@link DrmConfiguration} object is created during
-     * {@link #build()} and no other {@code Builder} methods that would populate {@link
+     * <p>If {@code uuid} is null or unset then no {@link DrmConfiguration} object is created
+     * during {@link #build()} and no other {@code Builder} methods that would populate {@link
      * MediaItem.PlaybackProperties#drmConfiguration} should be called.
      *
      * <p>This method should only be called if {@link #setUri} is passed a non-null value.
@@ -473,11 +488,11 @@ public final class MediaItem implements Bundleable {
      * <p>This method should only be called if {@link #setUri} is passed a non-null value.
      *
      * @param adTagUri The ad tag URI to load.
-     * @param adsId An opaque identifier for ad playback state associated with this item. Ad loading
-     *     and playback state is shared among all media items that have the same ads ID (by {@link
-     *     Object#equals(Object) equality}) and ads loader, so it is important to pass the same
-     *     identifiers when constructing playlist items each time the player returns to the
-     *     foreground.
+     * @param adsId    An opaque identifier for ad playback state associated with this item. Ad
+     *                 loading and playback state is shared among all media items that have the same
+     *                 ads ID (by {@link Object#equals(Object) equality}) and ads loader, so it is
+     *                 important to pass the same identifiers when constructing playlist items each
+     *                 time the player returns to the foreground.
      */
     public Builder setAdTagUri(@Nullable Uri adTagUri, @Nullable Object adsId) {
       this.adTagUri = adTagUri;
@@ -491,7 +506,7 @@ public final class MediaItem implements Bundleable {
      * <p>See {@code Player#getCurrentLiveOffset()}.
      *
      * @param liveTargetOffsetMs The target offset, in milliseconds, or {@link C#TIME_UNSET} to use
-     *     the media-defined default.
+     *                           the media-defined default.
      */
     public Builder setLiveTargetOffsetMs(long liveTargetOffsetMs) {
       this.liveTargetOffsetMs = liveTargetOffsetMs;
@@ -504,7 +519,7 @@ public final class MediaItem implements Bundleable {
      * <p>See {@code Player#getCurrentLiveOffset()}.
      *
      * @param liveMinOffsetMs The minimum allowed offset, in milliseconds, or {@link C#TIME_UNSET}
-     *     to use the media-defined default.
+     *                        to use the media-defined default.
      */
     public Builder setLiveMinOffsetMs(long liveMinOffsetMs) {
       this.liveMinOffsetMs = liveMinOffsetMs;
@@ -517,7 +532,7 @@ public final class MediaItem implements Bundleable {
      * <p>See {@code Player#getCurrentLiveOffset()}.
      *
      * @param liveMaxOffsetMs The maximum allowed offset, in milliseconds, or {@link C#TIME_UNSET}
-     *     to use the media-defined default.
+     *                        to use the media-defined default.
      */
     public Builder setLiveMaxOffsetMs(long liveMaxOffsetMs) {
       this.liveMaxOffsetMs = liveMaxOffsetMs;
@@ -530,7 +545,7 @@ public final class MediaItem implements Bundleable {
      * <p>This value is ignored for other stream types.
      *
      * @param minPlaybackSpeed The minimum factor by which playback can be sped up for live streams,
-     *     or {@link C#RATE_UNSET} to use the media-defined default.
+     *                         or {@link C#RATE_UNSET} to use the media-defined default.
      */
     public Builder setLiveMinPlaybackSpeed(float minPlaybackSpeed) {
       this.liveMinPlaybackSpeed = minPlaybackSpeed;
@@ -543,7 +558,7 @@ public final class MediaItem implements Bundleable {
      * <p>This value is ignored for other stream types.
      *
      * @param maxPlaybackSpeed The maximum factor by which playback can be sped up for live streams,
-     *     or {@link C#RATE_UNSET} to use the media-defined default.
+     *                         or {@link C#RATE_UNSET} to use the media-defined default.
      */
     public Builder setLiveMaxPlaybackSpeed(float maxPlaybackSpeed) {
       this.liveMaxPlaybackSpeed = maxPlaybackSpeed;
@@ -562,11 +577,14 @@ public final class MediaItem implements Bundleable {
       return this;
     }
 
-    /** Sets the media metadata. */
+    /**
+     * Sets the media metadata.
+     */
     public Builder setMediaMetadata(MediaMetadata mediaMetadata) {
       this.mediaMetadata = mediaMetadata;
       return this;
     }
+
     public Builder setDuration(long duration) {
       this.duration = duration;
       return this;
@@ -586,22 +604,23 @@ public final class MediaItem implements Bundleable {
                 mimeType,
                 drmUuid != null
                     ? new DrmConfiguration(
-                        drmUuid,
-                        drmLicenseUri,
-                        drmLicenseRequestHeaders,
-                        drmMultiSession,
-                        drmForceDefaultLicenseUri,
-                        drmPlayClearContentWithoutKey,
-                        drmSessionForClearTypes,
-                        drmKeySetId)
+                    drmUuid,
+                    drmLicenseUri,
+                    drmLicenseRequestHeaders,
+                    drmMultiSession,
+                    drmForceDefaultLicenseUri,
+                    drmPlayClearContentWithoutKey,
+                    drmSessionForClearTypes,
+                    drmKeySetId)
                     : null,
                 adTagUri != null ? new AdsConfiguration(adTagUri, adsId) : null,
                 streamKeys,
                 customCacheKey,
                 subtitles,
                 tag);
+        playbackProperties.duration = duration;
       }
-      MediaItem mediaItem = new MediaItem(
+      return new MediaItem(
           mediaId != null ? mediaId : DEFAULT_MEDIA_ID,
           new ClippingProperties(
               clipStartPositionMs,
@@ -617,27 +636,34 @@ public final class MediaItem implements Bundleable {
               liveMinPlaybackSpeed,
               liveMaxPlaybackSpeed),
           mediaMetadata != null ? mediaMetadata : MediaMetadata.EMPTY);
-      mediaItem.duration=duration;
-      return mediaItem;
     }
   }
 
-  /** DRM configuration for a media item. */
+  /**
+   * DRM configuration for a media item.
+   */
   public static final class DrmConfiguration {
 
-    /** The UUID of the protection scheme. */
+    /**
+     * The UUID of the protection scheme.
+     */
     public final UUID uuid;
 
     /**
      * Optional default DRM license server {@link Uri}. If {@code null} then the DRM license server
      * must be specified by the media.
      */
-    @Nullable public final Uri licenseUri;
+    @Nullable
+    public final Uri licenseUri;
 
-    /** The headers to attach to the request to the DRM license server. */
+    /**
+     * The headers to attach to the request to the DRM license server.
+     */
     public final Map<String, String> requestHeaders;
 
-    /** Whether the DRM configuration is multi session enabled. */
+    /**
+     * Whether the DRM configuration is multi session enabled.
+     */
     public final boolean multiSession;
 
     /**
@@ -652,10 +678,13 @@ public final class MediaItem implements Bundleable {
      */
     public final boolean forceDefaultLicenseUri;
 
-    /** The types of clear tracks for which to use a DRM session. */
+    /**
+     * The types of clear tracks for which to use a DRM session.
+     */
     public final List<Integer> sessionForClearTypes;
 
-    @Nullable private final byte[] keySetId;
+    @Nullable
+    private final byte[] keySetId;
 
     private DrmConfiguration(
         UUID uuid,
@@ -677,7 +706,9 @@ public final class MediaItem implements Bundleable {
       this.keySetId = keySetId != null ? Arrays.copyOf(keySetId, keySetId.length) : null;
     }
 
-    /** Returns the key set ID of the offline license. */
+    /**
+     * Returns the key set ID of the offline license.
+     */
     @Nullable
     public byte[] getKeySetId() {
       return keySetId != null ? Arrays.copyOf(keySetId, keySetId.length) : null;
@@ -717,27 +748,32 @@ public final class MediaItem implements Bundleable {
     }
   }
 
-  /** Configuration for playing back linear ads with a media item. */
+  /**
+   * Configuration for playing back linear ads with a media item.
+   */
   public static final class AdsConfiguration {
 
-    /** The ad tag URI to load. */
+    /**
+     * The ad tag URI to load.
+     */
     public final Uri adTagUri;
     /**
      * An opaque identifier for ad playback state associated with this item, or {@code null} if the
      * combination of the {@link MediaItem.Builder#setMediaId(String) media ID} and {@link #adTagUri
      * ad tag URI} should be used as the ads identifier.
      */
-    @Nullable public final Object adsId;
+    @Nullable
+    public final Object adsId;
 
     /**
      * Creates an ads configuration with the given ad tag URI and ads identifier.
      *
      * @param adTagUri The ad tag URI to load.
-     * @param adsId An opaque identifier for ad playback state associated with this item. Ad loading
-     *     and playback state is shared among all media items that have the same ads ID (by {@link
-     *     Object#equals(Object) equality}) and ads loader, so it is important to pass the same
-     *     identifiers when constructing playlist items each time the player returns to the
-     *     foreground.
+     * @param adsId    An opaque identifier for ad playback state associated with this item. Ad
+     *                 loading and playback state is shared among all media items that have the same
+     *                 ads ID (by {@link Object#equals(Object) equality}) and ads loader, so it is
+     *                 important to pass the same identifiers when constructing playlist items each
+     *                 time the player returns to the foreground.
      */
     private AdsConfiguration(Uri adTagUri, @Nullable Object adsId) {
       this.adTagUri = adTagUri;
@@ -765,33 +801,51 @@ public final class MediaItem implements Bundleable {
     }
   }
 
-  /** Properties for local playback. */
+  /**
+   * Properties for local playback.
+   */
   public static final class PlaybackProperties {
 
-    /** The {@link Uri}. */
+    /**
+     * The {@link Uri}.
+     */
     public final Uri uri;
 
     /**
      * The optional MIME type of the item, or {@code null} if unspecified.
      *
-     * <p>The MIME type can be used to disambiguate media items that have a URI which does not allow
-     * to infer the actual media type.
+     * <p>The MIME type can be used to disambiguate media items that have a URI which does not
+     * allow to infer the actual media type.
      */
-    @Nullable public final String mimeType;
+    @Nullable
+    public final String mimeType;
 
-    /** Optional {@link DrmConfiguration} for the media. */
-    @Nullable public final DrmConfiguration drmConfiguration;
+    /**
+     * Optional {@link DrmConfiguration} for the media.
+     */
+    @Nullable
+    public final DrmConfiguration drmConfiguration;
 
-    /** Optional ads configuration. */
-    @Nullable public final AdsConfiguration adsConfiguration;
+    /**
+     * Optional ads configuration.
+     */
+    @Nullable
+    public final AdsConfiguration adsConfiguration;
 
-    /** Optional stream keys by which the manifest is filtered. */
+    /**
+     * Optional stream keys by which the manifest is filtered.
+     */
     public final List<StreamKey> streamKeys;
 
-    /** Optional custom cache key (only used for progressive streams). */
-    @Nullable public final String customCacheKey;
+    /**
+     * Optional custom cache key (only used for progressive streams).
+     */
+    @Nullable
+    public final String customCacheKey;
 
-    /** Optional subtitles to be sideloaded. */
+    /**
+     * Optional subtitles to be sideloaded.
+     */
     public final List<Subtitle> subtitles;
 
     /**
@@ -799,7 +853,10 @@ public final class MediaItem implements Bundleable {
      * the {@code com.google.android.exoplayer2.Timeline} of the source as {@code
      * com.google.android.exoplayer2.Timeline.Window#tag}.
      */
-    @Nullable public final Object tag;
+    @Nullable
+    public final Object tag;
+
+    public long duration = -1;
 
     private PlaybackProperties(
         Uri uri,
@@ -854,10 +911,14 @@ public final class MediaItem implements Bundleable {
     }
   }
 
-  /** Live playback configuration. */
+  /**
+   * Live playback configuration.
+   */
   public static final class LiveConfiguration implements Bundleable {
 
-    /** A live playback configuration with unset values. */
+    /**
+     * A live playback configuration with unset values.
+     */
     public static final LiveConfiguration UNSET =
         new LiveConfiguration(
             /* targetLiveOffsetMs= */ C.TIME_UNSET,
@@ -899,16 +960,16 @@ public final class MediaItem implements Bundleable {
     /**
      * Creates a live playback configuration.
      *
-     * @param targetOffsetMs Target live offset, in milliseconds, or {@link C#TIME_UNSET} to use the
-     *     media-defined default.
-     * @param minOffsetMs The minimum allowed live offset, in milliseconds, or {@link C#TIME_UNSET}
-     *     to use the media-defined default.
-     * @param maxOffsetMs The maximum allowed live offset, in milliseconds, or {@link C#TIME_UNSET}
-     *     to use the media-defined default.
+     * @param targetOffsetMs   Target live offset, in milliseconds, or {@link C#TIME_UNSET} to use
+     *                         the media-defined default.
+     * @param minOffsetMs      The minimum allowed live offset, in milliseconds, or {@link
+     *                         C#TIME_UNSET} to use the media-defined default.
+     * @param maxOffsetMs      The maximum allowed live offset, in milliseconds, or {@link
+     *                         C#TIME_UNSET} to use the media-defined default.
      * @param minPlaybackSpeed Minimum playback speed, or {@link C#RATE_UNSET} to use the
-     *     media-defined default.
+     *                         media-defined default.
      * @param maxPlaybackSpeed Maximum playback speed, or {@link C#RATE_UNSET} to use the
-     *     media-defined default.
+     *                         media-defined default.
      */
     public LiveConfiguration(
         long targetOffsetMs,
@@ -955,13 +1016,15 @@ public final class MediaItem implements Bundleable {
     @Documented
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
-      FIELD_TARGET_OFFSET_MS,
-      FIELD_MIN_OFFSET_MS,
-      FIELD_MAX_OFFSET_MS,
-      FIELD_MIN_PLAYBACK_SPEED,
-      FIELD_MAX_PLAYBACK_SPEED
+        FIELD_TARGET_OFFSET_MS,
+        FIELD_MIN_OFFSET_MS,
+        FIELD_MAX_OFFSET_MS,
+        FIELD_MIN_PLAYBACK_SPEED,
+        FIELD_MAX_PLAYBACK_SPEED
     })
-    private @interface FieldNumber {}
+    private @interface FieldNumber {
+
+    }
 
     private static final int FIELD_TARGET_OFFSET_MS = 0;
     private static final int FIELD_MIN_OFFSET_MS = 1;
@@ -980,7 +1043,9 @@ public final class MediaItem implements Bundleable {
       return bundle;
     }
 
-    /** Object that can restore {@link LiveConfiguration} from a {@link Bundle}. */
+    /**
+     * Object that can restore {@link LiveConfiguration} from a {@link Bundle}.
+     */
     public static final Creator<LiveConfiguration> CREATOR =
         bundle ->
             new LiveConfiguration(
@@ -998,26 +1063,44 @@ public final class MediaItem implements Bundleable {
     }
   }
 
-  /** Properties for a text track. */
+  /**
+   * Properties for a text track.
+   */
   public static final class Subtitle {
 
-    /** The {@link Uri} to the subtitle file. */
+    /**
+     * The {@link Uri} to the subtitle file.
+     */
     public final Uri uri;
-    /** The MIME type. */
+    /**
+     * The MIME type.
+     */
     public final String mimeType;
-    /** The language. */
-    @Nullable public final String language;
-    /** The selection flags. */
-    @C.SelectionFlags public final int selectionFlags;
-    /** The role flags. */
-    @C.RoleFlags public final int roleFlags;
-    /** The label. */
-    @Nullable public final String label;
+    /**
+     * The language.
+     */
+    @Nullable
+    public final String language;
+    /**
+     * The selection flags.
+     */
+    @C.SelectionFlags
+    public final int selectionFlags;
+    /**
+     * The role flags.
+     */
+    @C.RoleFlags
+    public final int roleFlags;
+    /**
+     * The label.
+     */
+    @Nullable
+    public final String label;
 
     /**
      * Creates an instance.
      *
-     * @param uri The {@link Uri URI} to the subtitle file.
+     * @param uri      The {@link Uri URI} to the subtitle file.
      * @param mimeType The MIME type.
      * @param language The optional language.
      */
@@ -1028,9 +1111,9 @@ public final class MediaItem implements Bundleable {
     /**
      * Creates an instance.
      *
-     * @param uri The {@link Uri URI} to the subtitle file.
-     * @param mimeType The MIME type.
-     * @param language The optional language.
+     * @param uri            The {@link Uri URI} to the subtitle file.
+     * @param mimeType       The MIME type.
+     * @param language       The optional language.
      * @param selectionFlags The selection flags.
      */
     public Subtitle(
@@ -1041,12 +1124,12 @@ public final class MediaItem implements Bundleable {
     /**
      * Creates an instance.
      *
-     * @param uri The {@link Uri URI} to the subtitle file.
-     * @param mimeType The MIME type.
-     * @param language The optional language.
+     * @param uri            The {@link Uri URI} to the subtitle file.
+     * @param mimeType       The MIME type.
+     * @param language       The optional language.
      * @param selectionFlags The selection flags.
-     * @param roleFlags The role flags.
-     * @param label The optional label.
+     * @param roleFlags      The role flags.
+     * @param label          The optional label.
      */
     public Subtitle(
         Uri uri,
@@ -1094,10 +1177,14 @@ public final class MediaItem implements Bundleable {
     }
   }
 
-  /** Optionally clips the media item to a custom start and end position. */
+  /**
+   * Optionally clips the media item to a custom start and end position.
+   */
   public static final class ClippingProperties implements Bundleable {
 
-    /** The start position in milliseconds. This is a value larger than or equal to zero. */
+    /**
+     * The start position in milliseconds. This is a value larger than or equal to zero.
+     */
     public final long startPositionMs;
 
     /**
@@ -1118,7 +1205,9 @@ public final class MediaItem implements Bundleable {
      */
     public final boolean relativeToDefaultPosition;
 
-    /** Sets whether the start point is guaranteed to be a key frame. */
+    /**
+     * Sets whether the start point is guaranteed to be a key frame.
+     */
     public final boolean startsAtKeyFrame;
 
     private ClippingProperties(
@@ -1167,13 +1256,15 @@ public final class MediaItem implements Bundleable {
     @Documented
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
-      FIELD_START_POSITION_MS,
-      FIELD_END_POSITION_MS,
-      FIELD_RELATIVE_TO_LIVE_WINDOW,
-      FIELD_RELATIVE_TO_DEFAULT_POSITION,
-      FIELD_STARTS_AT_KEY_FRAME
+        FIELD_START_POSITION_MS,
+        FIELD_END_POSITION_MS,
+        FIELD_RELATIVE_TO_LIVE_WINDOW,
+        FIELD_RELATIVE_TO_DEFAULT_POSITION,
+        FIELD_STARTS_AT_KEY_FRAME
     })
-    private @interface FieldNumber {}
+    private @interface FieldNumber {
+
+    }
 
     private static final int FIELD_START_POSITION_MS = 0;
     private static final int FIELD_END_POSITION_MS = 1;
@@ -1192,7 +1283,9 @@ public final class MediaItem implements Bundleable {
       return bundle;
     }
 
-    /** Object that can restore {@link ClippingProperties} from a {@link Bundle}. */
+    /**
+     * Object that can restore {@link ClippingProperties} from a {@link Bundle}.
+     */
     public static final Creator<ClippingProperties> CREATOR =
         bundle ->
             new ClippingProperties(
@@ -1214,19 +1307,30 @@ public final class MediaItem implements Bundleable {
    */
   public static final String DEFAULT_MEDIA_ID = "";
 
-  /** Identifies the media item. */
+  /**
+   * Identifies the media item.
+   */
   public final String mediaId;
 
-  /** Optional playback properties. May be {@code null} if shared over process boundaries. */
-  @Nullable public final PlaybackProperties playbackProperties;
+  /**
+   * Optional playback properties. May be {@code null} if shared over process boundaries.
+   */
+  @Nullable
+  public final PlaybackProperties playbackProperties;
 
-  /** The live playback configuration. */
+  /**
+   * The live playback configuration.
+   */
   public final LiveConfiguration liveConfiguration;
 
-  /** The media metadata. */
+  /**
+   * The media metadata.
+   */
   public final MediaMetadata mediaMetadata;
 
-  /** The clipping properties. */
+  /**
+   * The clipping properties.
+   */
   public final ClippingProperties clippingProperties;
 
   private MediaItem(
@@ -1242,7 +1346,9 @@ public final class MediaItem implements Bundleable {
     this.clippingProperties = clippingProperties;
   }
 
-  /** Returns a {@link Builder} initialized with the values of this instance. */
+  /**
+   * Returns a {@link Builder} initialized with the values of this instance.
+   */
   public Builder buildUpon() {
     return new Builder(this);
   }
@@ -1280,12 +1386,14 @@ public final class MediaItem implements Bundleable {
   @Documented
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({
-    FIELD_MEDIA_ID,
-    FIELD_LIVE_CONFIGURATION,
-    FIELD_MEDIA_METADATA,
-    FIELD_CLIPPING_PROPERTIES
+      FIELD_MEDIA_ID,
+      FIELD_LIVE_CONFIGURATION,
+      FIELD_MEDIA_METADATA,
+      FIELD_CLIPPING_PROPERTIES
   })
-  private @interface FieldNumber {}
+  private @interface FieldNumber {
+
+  }
 
   private static final int FIELD_MEDIA_ID = 0;
   private static final int FIELD_LIVE_CONFIGURATION = 1;
