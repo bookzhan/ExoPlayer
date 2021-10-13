@@ -26,8 +26,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://www.bzblog.online/nexus/repository/maven-releases/" }
-        maven { url "https://www.bzblog.online/nexus/repository/maven-snapshots/" }
+        maven { url "https://www.raoyunsoft.com/nexus/repository/maven-releases/" }
+        maven { url "https://www.raoyunsoft.com/nexus/repository/maven-snapshots/" }
     }
     if (it.hasProperty('externalBuildDir')) {
         if (!new File(externalBuildDir).isAbsolute()) {
