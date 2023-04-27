@@ -15,20 +15,41 @@
 apply plugin: 'maven-publish'
 apply from: "$gradle.ext.exoplayerSettingsDir/missing_aar_type_workaround.gradle"
 
+ext {
+    NEXUS_USER = ''
+    NEXUS_PASSWORD = ''
+    RELEASE_SNAPSHOT = true
+
+    POM_URL_SNAP = 'https://www.raoyunsoft.com/nexus/repository/maven-snapshots/'
+    POM_URL = 'https://www.raoyunsoft.com/nexus/repository/maven-releases/'
+}
+
+if (System.getenv('NEXUS_USER')) {
+    NEXUS_USER = System.getenv('NEXUS_USER')
+}
+if (System.getenv('NEXUS_PASSWORD')) {
+    NEXUS_PASSWORD = System.getenv('NEXUS_PASSWORD')
+}
+println("NEXUS_USER=" + NEXUS_USER + " NEXUS_PASSWORD=" + NEXUS_PASSWORD)
+
 afterEvaluate {
     publishing {
         repositories {
             maven {
-                url = findProperty('mavenRepo') ?: "${buildDir}/repo"
+                url RELEASE_SNAPSHOT ? POM_URL_SNAP : POM_URL
+                credentials {
+                    username NEXUS_USER
+                    password NEXUS_PASSWORD
+                }
             }
         }
         publications {
             release(MavenPublication) {
                 from components.release
                 artifact androidSourcesJar
-                groupId = 'com.google.android.exoplayer'
+                groupId = 'com.guaishou.bzlib'
                 artifactId = releaseArtifactId
-                version releaseVersion
+                version = RELEASE_SNAPSHOT ? releaseVersion + "-SNAPSHOT" : releaseVersion
                 pom {
                     name = releaseArtifactId
                     description = releaseDescription
@@ -48,15 +69,15 @@ afterEvaluate {
                         connection = 'scm:git:https://github.com/google/ExoPlayer.git'
                         url = 'https://github.com/google/ExoPlayer'
                     }
-                    withXml {
-                        addMissingAarTypeToXml(it)
-                    }
+//                    withXml {
+//                        addMissingAarTypeToXml(it)
+//                    }
                 }
             }
         }
     }
 }
-tasks.withType(PublishToMavenRepository) { it.dependsOn lint, test }
+tasks.withType(PublishToMavenRepository) { it.dependsOn lint }
 
 task androidSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
