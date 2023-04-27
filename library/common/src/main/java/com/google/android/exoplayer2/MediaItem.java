@@ -81,6 +81,7 @@ public final class MediaItem implements Bundleable {
     // are removed.
     private LiveConfiguration.Builder liveConfiguration;
     private RequestMetadata requestMetadata;
+    private long duration=-1;
 
     /** Creates a builder. */
     @SuppressWarnings("deprecation") // Temporarily uses DrmConfiguration.Builder() constructor.
@@ -542,6 +543,11 @@ public final class MediaItem implements Bundleable {
       return this;
     }
 
+    public Builder setDuration(long duration) {
+      this.duration = duration;
+      return this;
+    }
+
     /** Returns a new {@link MediaItem} instance with the current builder values. */
     @SuppressWarnings("deprecation") // Using PlaybackProperties while it exists.
     public MediaItem build() {
@@ -560,6 +566,7 @@ public final class MediaItem implements Bundleable {
                 customCacheKey,
                 subtitleConfigurations,
                 tag);
+        localConfiguration.duration = duration;
       }
       return new MediaItem(
           mediaId != null ? mediaId : DEFAULT_MEDIA_ID,
@@ -1055,7 +1062,7 @@ public final class MediaItem implements Bundleable {
    */
   @Deprecated
   public static final class PlaybackProperties extends LocalConfiguration {
-
+    public long duration=-1;
     private PlaybackProperties(
         Uri uri,
         @Nullable String mimeType,
